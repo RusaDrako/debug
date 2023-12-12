@@ -38,7 +38,7 @@ function f1() {
 					'arr_3_3'=>'test 3 3'
 				]]], 'print_tree');
 	print_style(Debug::STYLE_NO, $arr, 'print_style');
-Hf,j
+
 	$arrStyle = [
 		Debug::STYLE_NO,
 		Debug::STYLE_NOTE,
