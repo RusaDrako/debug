@@ -2,6 +2,9 @@
 
 namespace RusaDrako\debug;
 
+use RusaDrako\debug\view\ConsoleView;
+use RusaDrako\debug\view\HTMLView;
+
 /**
  * Debug
  * @created 2023-12-11
@@ -165,86 +168,36 @@ class Debug{
 	 * Ваводит сообщение в стиле HTML
 	 */
 	public function showHTML(){
-		$content=[];
-		# Рандомный ключ для checkbox
-		$key_rand=rand(1000000, 9999999);
-		# Стиль для "всплывающего div"
-		$content[]='<style>
-	.block_print_info .block_print_info_show{ display: none;}
-	.block_print_info input[type=checkbox]:checked + .block_print_info_show { display: block;}
-</style>';
-		# Открываем тэг вывода (без обработки текста браузером)
-		$content[]='<pre class="block_print_info" style="display: block; position: relative; min-height: 20px; color: #000; border: 2px dashed #000; padding: 10px 20px; margin: 10px 15px; font-size: 12px;'.$this->_styleBackground.'">';
-		$content[]=$this->_printTitle($key_rand);
-		# Выводим скрытый input
-		$content[]='<input id="debug_print_'.$key_rand.'" class="input_print_info" type="checkbox" style="display: none;">';
-		# Открываем "всплывающий div"
-		$content[]='<div class="block_print_info_show">';
-		$content[]=$this->_printBacktrace();
-		# Добавляем контент
-		$content[]=$this->_viewDescription();
-		# Закрываем "всплывающий div"
-		$content[]='</div>'."\n";
-		# Закрываем тэг вывода
-		$content[]='</pre>'."\n";
-		# Выводим блок
-		echo $this->_implode_recursion('', $content);
-		$this->_clean();
+		$classView = new HTMLView();
+		$classView->setTitle($this->_title ?: 'Не указано');
+		$classView->setTitleStyle($this->_styleTitle);
+		$classView->setBacktraceStyle($this->_styleBackground);
+		$classView->setBacktrace($this->_printBacktrace());
+		$classView->setDescription($this->_viewDescription());
+		$classView->getView();
 	}
 
 	/**
 	 * Ваводит сообщение в стиле Консоль
 	 */
 	public function showConsole(){
-		$content=[];
-		# Открываем тэг вывода (без обработки текста браузером)
-		$content[]='================================================================================';
-		$content[]=$this->_printTitleApp();
-		$content[]=$this->_printBacktraceApp();
-		$content[]='================================================================================';
-		# Добавляем контент
-		$content[]=$this->_viewDescription();
-		$content[]="================================================================================\n";
-		# Выводим блок
-		echo $this->_implode_recursion("\n", $content);
-		$this->_clean();
-	}
-
-	/** */
-	private function _printTitle($key_rand){
-		# Если заголовок не задан
-		if(!$this->_title){
-			# Заголовок по умолчанию
-			$_title='Не указано';
-		}else{
-			$_title=$this->_title;
-		}
-		# Выводим заголовок
-		$content='<label for="debug_print_'.$key_rand.'"><span style="font-size: 120%;'.$this->_styleTitle.'"><b>&#9660; '.$_title." &#9660;</b></span></label>";
-		# Возвращаем содержимое
-		return $content;
-	}
-
-	/** */
-	private function _printTitleApp(){
-		# Выводим заголовок
-		$content=($this->_title ?: 'Не указано')."\n";
-		# Возвращаем содержимое
-		return $content;
+		$classView = new ConsoleView();
+		$classView->setTitle($this->_title ?: 'Не указано');
+		$classView->setBacktrace($this->_printBacktraceApp());
+		$classView->setDescription($this->_viewDescription());
+		$classView->getView();
 	}
 
 	/** Блок информации по "цепочке вызова" */
 	private function _printBacktrace(){
 		$content=[];
 		$btClass = new Backtrace();
-		$content[]='<hr>';
 		switch($this->_typeBacktrace){
 			case Backtrace::BACKTRACE_TYPE_1:
 				$btClass->template=<<<HTML
 <b>:file: (:line:):</b> => :function:
 HTML;
 				$content[]=implode($btClass->viewBacktrace(), '<br>');
-				$content[]='<hr>';
 				break;
 			case Backtrace::BACKTRACE_TYPE_2:
 				$btClass->template=<<<HTML
@@ -254,7 +207,6 @@ HTML;
 <b>Функция:</b> :function:
 HTML;
 				$content[]=implode($btClass->viewBacktrace(), '<hr>');
-				$content[]='<hr>';
 				break;
 			default:
 				break;
