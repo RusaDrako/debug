@@ -3,12 +3,27 @@
 namespace RusaDrako\debug;
 
 /**
- * Debug - Печать сообщений
+ * Debug
  * @created 2023-12-11
  * @author Петухов Леонид <rusadrako@yandex.ru>
  */
 class Debug{
+	/** @var string Стили отображения */
+	const STYLE_NO      = 'no';
+	const STYLE_NOTE    = 'note';
+	const STYLE_OK      = 'ok';
+	const STYLE_WARNING = 'warning';
+	const STYLE_ERROR   = 'error';
 
+	/** @var mixed Выводить backtrace */
+	private $_htmlStyle = [
+		self::STYLE_NO      => ['title' => '', 'bg' => ''],
+		self::STYLE_NOTE    => ['title' => 'color: #080;', 'bg' => 'background: #ffd; color: #000;'],
+		self::STYLE_OK      => ['title' => 'color: #080;', 'bg' => 'background: #dfd; color: #000;'],
+		self::STYLE_WARNING => ['title' => 'color: #870;', 'bg' => 'background: #fea; color: #000;'],
+		self::STYLE_ERROR   => ['title' => 'color: #800;', 'bg' => 'background: #fdd; color: #000;'],
+		self::STYLE_ERROR   => ['title' => 'color: #800;', 'bg' => 'background: #fdd; color: #000;'],
+	];
 	/** @var mixed Выводить backtrace */
 	private $_typeBacktrace;
 	/** @var mixed Заголовок */
@@ -18,15 +33,14 @@ class Debug{
 	/** @var bool Выводить в стиле var_dump() */
 	private $_isVarDump=false;
 	/** @var bool Выводить данные как есть, без модификации */
-	private $_asItIs=false;
+	private $_isAsItIs=false;
 	/** @var string Цвет фона */
-	private $_colorBackground;
+	private $_styleBackground;
 	/** @var string Цвет заголовка */
-	private $_colorTitle;
+	private $_styleTitle;
 
 	/** Объект модели */
 	private static $_object=null;
-
 
 	/**  */
 	public function __construct(){
@@ -34,10 +48,8 @@ class Debug{
 		$this->_clean();
 	}
 
-
 	/**  */
 	public function __destruct(){}
-
 
 	/** Вызов объекта класса
 	 * @return object Объект модели
@@ -52,17 +64,14 @@ class Debug{
 		return self::$_object;
 	}
 
-
 	/** Базова чистка настроек */
 	private function _clean(){
-		$this->_typeBacktrace=false;
-		$this->_title=false;
-		$this->_description=false;
-		$this->_isVarDump=false;
-		$this->_colorBackground='#ffd';
-		$this->_colorTitle='#080';
+		$this->_typeBacktrace=null;
+		$this->_title=null;
+		$this->_description=null;
+		$this->_isVarDump=null;
+		$this->useStyle(static::STYLE_NOTE);
 	}
-
 
 	/** Рекурсивная сборка массива в строку
 	 * @param string $glue Строка-склейка
@@ -77,76 +86,103 @@ class Debug{
 		return implode($glue, $array);
 	}
 
-
-	/** */
-	public function setBackgroundColor($value){
-		$this->_colorBackground=$value;
+	/**
+	 * @param string $styleName
+	 * @return $this
+	 */
+	public function useStyle(string $styleName){
+		if (!array_key_exists($styleName, $this->_htmlStyle)){
+			$styleName=self::STYLE_NO;
+		}
+		$this->_styleTitle=$this->_htmlStyle[$styleName]['title'];
+		$this->_styleBackground=$this->_htmlStyle[$styleName]['bg'];
 		return $this;
 	}
 
-
-	/** */
-	public function setTitleColor($value){
-		$this->_colorTitle=$value;
+	/**
+	 * @param string $styleName
+	 * @param string $cssBackgrount
+	 * @param string $cssTitle
+	 * @return $this
+	 */
+	public function setStyle(string $styleName, string $cssBackgrount, string $cssTitle){
+		$this->_htmlStyle[$styleName]['title'] = $cssTitle;
+		$this->_htmlStyle[$styleName]['bg'] = $cssBackgrount;
 		return $this;
 	}
 
-
-	/** */
-	public function addBacktrace($type){
-		$this->_typeBacktrace=$type;
-		return $this;
-	}
-
-
-	/** */
-	public function viewAsItIs($bool=false){
-		$this->_asItIs=$bool;
-		return $this;
-	}
-
-
-	/** */
-	public function var_dump($bool=false){
-		$this->_isVarDump=$bool;
-		return $this;
-	}
-
-
-	/** */
+	/**
+	 * Устанавливает заголовок сообщения
+	 * @param $value
+	 * @return $this
+	 */
 	public function addTitle($value){
 		$this->_title=$value;
 		return $this;
 	}
 
+	/**
+	 * Устанавливает тип вывода backtrace
+	 * @param $type
+	 * @return $this
+	 */
+	public function addBacktrace($type){
+		$this->_typeBacktrace=$type;
+		return $this;
+	}
 
-	/** */
+	/**
+	 * Устанавливает данные для вывода
+	 * @param $value
+	 * @return $this
+	 */
 	public function addDescription($value){
 		$this->_description=$value;
 		return $this;
 	}
 
+	/**
+	 * Устанавливает маркер "Отображать как есть"
+	 * @param false $bool
+	 * @return $this
+	 */
+	public function isAsItIs($bool=false){
+		$this->_isAsItIs=$bool;
+		return $this;
+	}
 
-	/** */
-	public function printForm(){
+	/**
+	 * Устанавливает маркер "Выводить в стиле var_dump()"
+	 * @param false $bool
+	 * @return $this
+	 */
+	public function isVarDump($bool=false){
+		$this->_isVarDump=$bool;
+		return $this;
+	}
+
+	/**
+	 * Ваводит сообщение в стиле HTML
+	 */
+	public function showHTML(){
 		$content=[];
 		# Рандомный ключ для checkbox
-		$key_rand=rand(1000, 9999);
+		$key_rand=rand(1000000, 9999999);
 		# Стиль для "всплывающего div"
 		$content[]='<style>
 	.block_print_info .block_print_info_show{ display: none;}
 	.block_print_info input[type=checkbox]:checked + .block_print_info_show { display: block;}
 </style>';
 		# Открываем тэг вывода (без обработки текста браузером)
-		$content[]='<pre class="block_print_info" style="display: block; position: relative; min-height: 20px; background: '.$this->_colorBackground.'; color: #000; border: 2px dashed #000; padding: 10px 20px; margin: 10px 15px; font-size: 12px;">';
+		$content[]='<pre class="block_print_info" style="display: block; position: relative; min-height: 20px; color: #000; border: 2px dashed #000; padding: 10px 20px; margin: 10px 15px; font-size: 12px;'.$this->_styleBackground.'">';
 		$content[]=$this->_printTitle($key_rand);
 		# Выводим скрытый input
-		$content[]='<input id="input_print_info_'.$key_rand.'" class="input_print_info" type="checkbox" style="display: none;">';
+		$content[]='<input id="debug_print_'.$key_rand.'" class="input_print_info" type="checkbox" style="display: none;">';
 		# Открываем "всплывающий div"
 		$content[]='<div class="block_print_info_show">';
 		$content[]=$this->_printBacktrace();
 		# Добавляем контент
-		$content[]=$this->_print_description();
+		$content[]=$this->_viewDescription();
 		# Закрываем "всплывающий div"
 		$content[]='</div>'."\n";
 		# Закрываем тэг вывода
@@ -156,23 +192,23 @@ class Debug{
 		$this->_clean();
 	}
 
-
-	/** */
-	public function printApp(){
+	/**
+	 * Ваводит сообщение в стиле Консоль
+	 */
+	public function showConsole(){
 		$content=[];
 		# Открываем тэг вывода (без обработки текста браузером)
 		$content[]='================================================================================';
-		$content[]=$this->_printTitleApp($key_rand);
+		$content[]=$this->_printTitleApp();
 		$content[]=$this->_printBacktraceApp();
 		$content[]='================================================================================';
 		# Добавляем контент
-		$content[]=$this->_print_description();
+		$content[]=$this->_viewDescription();
 		$content[]="================================================================================\n";
 		# Выводим блок
 		echo $this->_implode_recursion("\n", $content);
 		$this->_clean();
 	}
-
 
 	/** */
 	private function _printTitle($key_rand){
@@ -184,38 +220,41 @@ class Debug{
 			$_title=$this->_title;
 		}
 		# Выводим заголовок
-		$content='<label for="input_print_info_'.$key_rand.'"><span style="color: '.$this->_colorTitle.'; font-size: 120%;"><b>&#9660; '.$_title." &#9660;</b></span></label>";
+		$content='<label for="debug_print_'.$key_rand.'"><span style="font-size: 120%;'.$this->_styleTitle.'"><b>&#9660; '.$_title." &#9660;</b></span></label>";
 		# Возвращаем содержимое
 		return $content;
 	}
-
 
 	/** */
-	private function _printTitleApp($key_rand){
-		# Если заголовок не задан
-		if(!$this->_title){
-			# Заголовок по умолчанию
-			$_title='Не указано';
-		}
-		else{
-			$_title=$this->_title;
-		}
+	private function _printTitleApp(){
 		# Выводим заголовок
-		$content=$_title."\n";
+		$content=($this->_title ?: 'Не указано')."\n";
 		# Возвращаем содержимое
 		return $content;
 	}
-
 
 	/** Блок информации по "цепочке вызова" */
 	private function _printBacktrace(){
 		$content=[];
+		$btClass = new Backtrace();
+		$content[]='<hr>';
 		switch($this->_typeBacktrace){
-			case '1':
-				$content[]=$this->_printBacktrace1();
+			case Backtrace::BACKTRACE_TYPE_1:
+				$btClass->template=<<<HTML
+<b>:file: (:line:):</b> => :function:
+HTML;
+				$content[]=implode($btClass->viewBacktrace(), '<br>');
+				$content[]='<hr>';
 				break;
-			case '2':
-				$content[]=$this->_printBacktrace2();
+			case Backtrace::BACKTRACE_TYPE_2:
+				$btClass->template=<<<HTML
+<b>Папка:</b>   :dir:
+<b>Файл:</b>    :fileName:
+<b>Строка:</b>  :line:
+<b>Функция:</b> :function:
+HTML;
+				$content[]=implode($btClass->viewBacktrace(), '<hr>');
+				$content[]='<hr>';
 				break;
 			default:
 				break;
@@ -223,76 +262,25 @@ class Debug{
 		# Возвращаем содержимое
 		return $content;
 	}
-
-
-	/** Блок информации по "цепочке вызова" Тип 1 */
-	public function _printBacktrace1(){
-		$content=[];
-		# Получаем информацию по "цепочке вызова"
-		$backtrace=debug_backtrace();
-		unset($backtrace[0]);
-		unset($backtrace[1]);
-		unset($backtrace[2]);
-		# "Разворачиваем" массив
-		$backtrace=array_reverse($backtrace);
-		$content[]='<span style="font-size: 90%;">';
-		# Проходим по элементам массива
-		foreach($backtrace as $k=>$v){
-			$file = isset($v['file']) ? dirname($v['file']).'\\'.basename($v['file']) : '---';
-			$line = isset($v['line']) ? $v['line'] : '---';
-			$function = isset($v['function']) ? $v['function'] : '---';
-			$content[]="<b>{$file} (<span>{$line}</span>):</b> => {$function}<br>";
-		}
-		$content[]='</span>';
-		$content[]='<hr>';
-		# Возвращаем содержимое
-		return $content;
-	}
-
-
-	/** Блок информации по "цепочке вызова" Тип 2 */
-	private function _printBacktrace2(){
-		$content=[];
-		# Получаем информацию по "цепочке вызова"
-		$backtrace=debug_backtrace();
-		unset($backtrace[0]);
-		unset($backtrace[1]);
-		unset($backtrace[2]);
-		# "Разворачиваем" массив
-		$backtrace=array_reverse($backtrace);
-		# "Разворачиваем" массив
-		$backtrace=array_reverse($backtrace);
-		$content[]='<span style="font-size: 90%;">';
-		# Проходим по элементам массива
-		foreach($backtrace as $k=>$v){
-			# Выводим информацию о вызывающем файле
-			if(isset($v['file'])){
-				$content[]='<b>Папка:</b>  '.dirname($v['file'])."\n";
-				$content[]='<b>Файл:</b>   '.basename($v['file'])."\n";
-				$content[]='<b>Строка:</b> '.$v['line'];
-			}
-			else{
-				$content[]="<b>Папка:</b>\n";
-				$content[]="<b>Файл:</b>\n";
-				$content[]="<b>Строка:</b>";
-			}
-			$content[]='<hr>';
-		}
-		$content[]='</span>';
-		# Возвращаем содержимое
-		return $content;
-	}
-
 
 	/** Блок информации по "цепочке вызова" */
 	private function _printBacktraceApp(){
 		$content=[];
+		$btClass = new Backtrace();
 		switch($this->_typeBacktrace){
-			case '1':
-				$content[]=$this->_printBacktraceApp1();
+			case Backtrace::BACKTRACE_TYPE_1:
+				$btClass->template=<<<HTML
+:file: (:line:): => :function:
+HTML;
+				$content[]=$btClass->viewBacktrace();
 				break;
-			case '2':
-				$content[]=$this->_printBacktraceApp2();
+			case Backtrace::BACKTRACE_TYPE_2:
+				$btClass->template=<<<HTML
+Папка:  :dir:
+Файл:   :fileName:
+Строка: :line:
+HTML;
+				$content[]=$btClass->viewBacktrace();
 				break;
 			default:
 				break;
@@ -301,59 +289,8 @@ class Debug{
 		return $content;
 	}
 
-
-	/** Блок информации по "цепочке вызова" Тип 1 */
-	public function _printBacktraceApp1(){
-		$content=[];
-		# Получаем информацию по "цепочке вызова"
-		$backtrace=debug_backtrace();
-		unset($backtrace[0]);
-		unset($backtrace[1]);
-		unset($backtrace[2]);
-		# "Разворачиваем" массив
-		$backtrace=array_reverse($backtrace);
-		# Проходим по элементам массива
-		foreach($backtrace as $k=>$v){
-			$content[]=(isset($v['file']) ? dirname($v['file']).'\\'.basename($v['file']) : '---').' ('.(isset($v['line']) ? $v['line'] : '---').'): => '.(isset($v['function']) ? $v['function'] : '---');
-		}
-		# Возвращаем содержимое
-		return $content;
-	}
-
-
-	/** Блок информации по "цепочке вызова" Тип 2 */
-	private function _printBacktraceApp2(){
-		$content=[];
-		# Получаем информацию по "цепочке вызова"
-		$backtrace=debug_backtrace();
-		unset($backtrace[0]);
-		unset($backtrace[1]);
-		unset($backtrace[2]);
-		# "Разворачиваем" массив
-		$backtrace=array_reverse($backtrace);
-		# "Разворачиваем" массив
-		$backtrace=array_reverse($backtrace);
-		# Проходим по элементам массива
-		foreach($backtrace as $k=>$v){
-			# Выводим информацию о вызывающем файле
-			if(isset($v['file'])){
-				$content[]='Папка:	'.dirname($v['file']);
-				$content[]='Файл:	'.basename($v['file']);
-				$content[]='Строка:	'.$v['line']."\n";
-			}
-			else{
-				$content[]='<b>Папка:';
-				$content[]='<b>Файл:';
-				$content[]='<b>Строка:'."\n";
-			}
-		}
-		# Возвращаем содержимое
-		return $content;
-	}
-
-
 	/** Вывод содержимого */
-	public function _print_description(){
+	public function _viewDescription(){
 		$content=[];
 		$value=$this->_description;
 		# Выводим основной блок информации
@@ -364,7 +301,7 @@ class Debug{
 			$content[]=ob_get_contents();
 			ob_end_clean();
 		} else if(is_string($value)){
-			if(true!=$this->_asItIs){
+			if(true!=$this->_isAsItIs){
 				$value=str_replace('<', '&#60;', $value);
 				$value=str_replace('<', '&#62;', $value);
 			}
@@ -376,6 +313,5 @@ class Debug{
 		return $content;
 	}
 
-
-	/**/
+/**/
 }
