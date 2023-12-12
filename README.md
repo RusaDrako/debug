@@ -19,3 +19,27 @@ composer require 'rusadrako/debug'
 ```php
 require_once('/debug/src/autoload.php')
 ```
+
+
+## Функции
+
+```php
+/** Вывод блока данных с добавлением backtrace (html) */
+function print_info($data, $title=false, $view=true){}
+
+/** Вывод блока данных с добавлением backtrace (console) */
+function print_info_app($data, $title=false, $view=true){}
+
+/** Вывод блока данных в формате var_dump с добавлением backtrace (html) */
+function print_dump($data, $title=false, $view=true){}
+
+/** Пользовательское сообщение - лог (html) */
+function print_log($data, $view=true){
+
+/** Пользовательское сообщение - ошибка (html) */
+function print_style($style, $data, $title=false, $view=true){}
+```
+- **$data** - Содержимое блока
+- **$title** - Заголовок блока
+- **$view** - Показать блок
+- **$style** - Стиль формы
