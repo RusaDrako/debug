@@ -53,7 +53,6 @@ class ArrayView {
 			# Оставляем массив, как есть
 			$result = $variable;
 		}
-
 		# Возвращаем результат
 		return $result;
 	}
@@ -74,7 +73,6 @@ class ArrayView {
 	 * @return string Табличное представление двухмерного массива
 	 */
 	public function print_table_2d_array($array = [], $column_name = [], $setting = []) {
-
 		# Нулевые настройки функции
 		$setting_t = array(
 			'class'        => false,   # Имя класса таблицы (по умолчанию используется стиль)
@@ -83,69 +81,47 @@ class ArrayView {
 			'line_key'     => false,   # Печатать номер строки по ключу - true, или просто номер строки - false
 			'column_place' => false,   # Порядок вывода столбцов
 		);
-
 		# Накладываем присланные настрйки функции
 		$setting_t = array_merge($setting_t, $setting);
-
-		# Используем класс
-		if ($setting_t['class']) {
-			$class = ' class="' . $setting_t['class'] . '"';
-			$style = '';
-			# или стиль
-		} else {
-			$class = '';
-			$style = ' style="border: 1px solid #ddd;"';
-		}
-
-		# Нулевой массив формируймой таблицы
-		$content = [];
-
+		# Используем класс или стиль
+		$class = $setting_t['class'] ? ' class="' . $setting_t['class'] . '"' : '';
+		$style = $setting_t['class'] ? '' : ' style="border: 1px solid #ddd;"';
 		# имена столбцов всегда маленькими буквамии без пробелов
 		$setting_t['not_print'] = preg_replace("/\s/is", '', $setting_t['not_print']);
-
 		# создаём массив столбцов, которые не надо писать
 		$arr_not_print = $this->string_divide_to_array($setting_t['not_print']);
-
-		$content[] = '<table' . $class . $style . '>';
-
+		$content[] = "<table{$class}{$style}>";
 		# Если передан массив данных и он не пустой
 		if (is_array($array)
 			&& !empty($array)
 			&& is_array(current($array))) {
-			//echo 1234567890;
 			# Выстраиваем столбцы в заданном порядке
 			if (!empty($setting_t['column_place'])) {
 				# Формируем массив из строки
-				$arr_place_column = $this->string_divide_to_array ($setting_t['column_place']);
+				$arr_place_column = $this->string_divide_to_array($setting_t['column_place']);
 //				# Разбиваем строку на массив
 //				$arr_place_column = explode(",", $setting_t['column_place']);
 //				# Меняем местами ключи и значения
 //				$arr_place_column = array_flip($arr_place_column);
-
 				foreach ($arr_place_column as $key => $value) {
 					$arr_place_column[$key] = '';
 				}
-
 				$new_array = [];
 				foreach ($array as $key => $value) {
-					//					if (is_array($value)) {
+//					if (is_array($value)) {
 					$new_array[$key] = array_merge($arr_place_column, $value);
-					//					}
+//					}
 				}
 				$array = $new_array;
 			}
-
-
 			# Если заданы размеры столбцов, то формируем их
 			if (!empty($setting_t['column_size'])) {
 				$arr_size = explode(",", $setting_t['column_size']);
 				$content[] = '<col width="' . implode('px"><col width="', $arr_size) . 'px">';
 			}
-
 			$content[] = '<thead>';
 			$content[] = '<tr>';
-			$content[] = '<th' . $style . '><b>#</b></th>';
-
+			$content[] = "<th{$style}><b>#</b></th>";
 			# Проходим по массиву данных (только по первой строке, для формирования заголовков)
 			foreach ($array as $value) {
 				# Если строка - массив (каждый элемент - столбец)
@@ -160,18 +136,15 @@ class ArrayView {
 							$key_2 = $column_name[$key_2];
 						}
 						# Прописываем заголовок
-						$content[] = '<th' . $style . '><b>' . $key_2 . "</b></th>";
+						$content[] = "<th{$style}><b>{$key_2}</b></th>";
 					}
 				}
 				# Прерываем проход по массиву
 				break;
 			}
-
 			$content[] = '</tr>';
-			$content[] = "</thead>\n";
-
+			$content[] = "</thead>";
 			$i = 0;
-
 			# Проходим по массиву данных
 			foreach($array as $key => $value) {
 				# Если строка - массив (каждый элемент - столбец)
@@ -181,12 +154,12 @@ class ArrayView {
 					$content[] = '<tr>';
 					# Если требуется выводить ключ
 					if ($setting_t['line_key']) {
-						$content[] = '<td' . $style . '><b><span style=\'color: #f00;\'>' . $key . "</span></b></td>";
+						$content[] = "<td{$style}><b><span style=\"color: #f00;\">{$key}</span></b></td>";
 						# Если требуется выводить номер строки
 					} else {
-						$content[] = '<td' . $style . '><b>' . ++$i . "</b></td>";
+						$content[] = "<td{$style}><b>" . ++$i . "</b></td>";
 					}
-					$content[] = '<td' . $style . '>' . implode("</td>\n<td" . $style . ">", $value) . "</td>";
+					$content[] = "<td{$style}>" . implode("</td>\n<td{$style}>", $value) . "</td>";
 					$content[] = '</tr>';
 				}
 			}
@@ -196,10 +169,8 @@ class ArrayView {
 			$content[] = '</tr>';
 		}
 		$content[] = '</table>';
-
 		# Объединяем массив в строку
 		$result = implode("\n", $content);
-
 		# Возвращаем результат
 		return $result;
 	}
@@ -211,35 +182,26 @@ class ArrayView {
 	 * @return string Табличное представление древовидного массива
 	 */
 	public function print_table_tree_array($array = [], $class = false) {
-
-		if ($class) {
-			$class = ' class="' . $class . '"';
-			$style = '';
-		} else {
-			$class = '';
-			$style = ' style="border: 1px solid #ddd;"';
-		}
-
-		$content = [];
-
-		$content[] = '<table' . $class . $style . '>';
-
+		# Используем класс или стиль
+		$class = $class ? ' class="' . $class . '"' : '';
+		$style = $class ? '' : ' style="border: 1px solid #ddd;"';
+		$content[] = "<table{$class}{$style}>";
 		if (is_array($array)) {
 			if (empty($array)) {
 				$content[] = '<tr>';
-				$content[] = '<td' . $style . '> <i>Пустой массив</i> </td>';
+				$content[] = "<td{$style}> <i>Пустой массив</i> </td>";
 				$content[] = '</tr>';
 			} else {
 				foreach($array as $key => $value) {
 					$content[] = '<tr>';
 					if (is_array($value)) {
-						$content[] = '<td style="border: 1px solid #ddd; color: #f0f;">=><b>[' . $key . ']</b></td>';
-						$content[] = '<td' . $style . '>';
+						$content[] = '<td style="border: 1px solid #f0f; color: #f0f;"><b>[' . $key . ']</b></td>';
+						$content[] = "<td{$style}>";
 						$content[] = $this->print_table_tree_array($value);
 						$content[] = '</td>';
 					} else {
-						$content[] = '<td style="border: 1px solid #ddd; color: #00f;">=><b>[' . $key . ']</b></td>';
-						$content[] = '<td' . $style . '>' . $value . '</td>';
+						$content[] = '<td style="border: 1px solid #00f; color: #00f;"><b>[' . $key . ']</b></td>';
+						$content[] = "<td{$style}>{$value}</td>";
 					}
 					$content[] = '</tr>';
 				}
@@ -250,11 +212,8 @@ class ArrayView {
 			$content[] = '</td>';
 			$content[] = '</tr>';
 		}
-
 		$content[] = '</table>';
-
 		$result = implode("\n", $content);
-
 		# Возвращаем результат
 		return $result;
 	}
@@ -278,7 +237,6 @@ class ArrayView {
 				usort($result, $this->sort_2d_array_asc($key));
 			}
 		}
-
 		# Возвращаем результат
 		return $result;
 	}
@@ -333,7 +291,6 @@ class ArrayView {
 					$array_sort[] = 127;
 				}
 			}
-
 			# Выбираем тип сортировки и сортируем
 			if (false == $desc) {
 				array_multisort($array_sort, SORT_ASC, $array);
@@ -356,10 +313,8 @@ class ArrayView {
 	 * @return array Массив с новыми кючами
 	 */
 	public function rename_keys($array, $arr_couple_keys = []) {
-
 		# Значение результата по-умолчанию
 		$result = false;
-
 		# Если массив пустой, или не массив, то возвращаем входящие данные
 		if (empty($array)) {
 			# Возвращаем результат
@@ -368,7 +323,6 @@ class ArrayView {
 			# Возвращаем результат
 			return $array;
 		}
-
 		# Если массив ключей пустой, или не массив, то возвращаем входящие данные
 		if (empty($arr_couple_keys)) {
 			# Возвращаем результат
@@ -377,28 +331,23 @@ class ArrayView {
 			# Возвращаем результат
 			return $array;
 		}
-
 		# Получаем массив новых ключей
 		$arr_old_keys = array_flip(array_keys($arr_couple_keys));
 		$arr_new_keys = array_flip(array_keys(array_flip($arr_couple_keys)));
-
 		# Получаем ключи основного массива
 		$arr_keys = array_flip(array_keys($array));
-
 		# Если в основном массиве есть ключи, которые есть в списке новых ключей, то останавливаем функцию и возвращаем исходные данные,что бы не потерять данные
 		$result_control_1 = array_intersect_key($arr_keys, $arr_new_keys);
 		if (0 < count($result_control_1)) {
 			# Возвращаем результат
 			return $array;
 		}
-
 		# Если в массиве новых ключей есть ключи, которые есть в списке старых ключей, то останавливаем функцию и возвращаем исходные данные,что бы не потерять данные
 		$result_control_2 = array_intersect_key($arr_new_keys, $arr_old_keys);
 		if (0 < count($result_control_2)) {
 			# Возвращаем результат
 			return $array;
 		}
-
 		# Меняем ключи $key - старый ключ, $value - новый ключ
 		foreach ($arr_couple_keys as $key => $value) {
 			# Если ключ в массиве найден
@@ -409,7 +358,6 @@ class ArrayView {
 				unset($array[$key]);
 			}
 		}
-
 		# Возвращаем результат
 		return $array;
 	}
@@ -421,10 +369,8 @@ class ArrayView {
 	 * @return array Массив с новыми кючами
 	 */
 	public function rebuild_array_key($array, $column_name) {
-
 		# Значение результата по-умолчанию
 		$result = [];
-
 		# Если переменная - массив, и она не пустая
 		if (is_array($array)
 			&& !empty($array)) {
@@ -437,7 +383,6 @@ class ArrayView {
 				}
 			}
 		}
-
 		# Возвращаем результат
 		return $result;
 	}
@@ -450,10 +395,8 @@ class ArrayView {
 	 * @return array Новый массив
 	 */
 	public function create_subarray($array, $column_value, $column_key = false) {
-
 		# Значение результата по-умолчанию
 		$result = [];
-
 		# Если переменная - массив, и она не пустая
 		if (is_array($array)
 			&& !empty($array)) {
@@ -474,7 +417,6 @@ class ArrayView {
 				}
 			}
 		}
-
 		# Возвращаем результат
 		return $result;
 	}
@@ -484,7 +426,7 @@ class ArrayView {
 	 * @param string $string Строка с элементами, на основе которых формируется массив (через запятую)
 	 * @return array Новый массив (ключи и значени имеют одинаковые значения)
 	 */
-	private function string_divide_to_array ($string) {
+	private function string_divide_to_array($string) {
 		# Чистим строку от пробелов
 		$string_t = preg_replace("/\s/i", '', $string);
 		# Из строки получаем массив

@@ -17,19 +17,26 @@ class c1 {
 function f1() {
 	$arr = ['arr_1'=>'ddddd', 'arr_2'=>12344];
 	$arrTable = [
-		['column_1'=>'test 1', 'column_2' => 1],
-		['column_2'=>'test 2', 'column_3' => 2],
-		['column_1'=>'test 3', 'column_2' => 3],
+		['column_1'=>'test 1', 'column_2' => 1,],
+		['column_2'=>'test 2', 'column_3' => 2,],
+		['column_1'=>'test 3', 'column_2' => 3,],
 	];
 	$arrTree = [
-		'arr_1_1'=>'test 1 1',
-		'arr_1_2'=>[
-			'arr_2_1'=>'test 2 1',
-			'arr_2_2'=>[
-				'arr_3_1'=>'test 3 1',
-				'arr_3_2'=>'test 3 2',
-				'arr_3_3'=>'test 3 3'
-			]]];
+		'key_1_1'=>'test 1 1',
+		'key_1_2'=>[
+			'key_2_1'=>'test 2 1',
+			'key_2_2'=>'test 2 2',
+			'key_2_3'=>[
+				'key_3_1'=>'test 3 1',
+				'key_3_2'=>'test 3 2',
+				'key_3_3'=>'test 3 3',
+				'key_3_4'=>NULL,
+				'key_3_5'=>false,
+				'key_3_6'=>true,
+			],
+			'key_2_4'=>'test 2 4',
+		]
+	];
 	print_info('print_info');
 	print_info($arr, 'print_info');
 	echo '<pre>';
