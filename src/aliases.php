@@ -60,45 +60,45 @@ if (!function_exists('print_dump')){
 	}
 }
 
-//if (!function_exists('print_table')){
-//	/** Пользовательское сообщение.
-//	 * @param int|string|array $data Переменная для печати.
-//	 * @param string $title Заголовок.
-//	 * @param bool $view Маркер "показывать в любом случае".
-//	 */
-//	function print_table($data, $title=false, $view=false){
-//		# Отрабатывать только в тестовом режиме
-//		if($view){
-//			$obj_array=new \array_class();
-//			Debug::call()
-//				->addBacktrace(1)
-//				->isAsItIs(true)
-//				->addDescription($obj_array->print_table_2d_array($data))
-//				->addTitle($title)
-//				->showHTML();
-//		}
-//	}
-//}
-//
-//if (!function_exists('print_tree')){
-//	/** Пользовательское сообщение.
-//	 * @param int|string|array $data Переменная для печати.
-//	 * @param string $title Заголовок.
-//	 * @param bool $view Маркер "показывать в любом случае".
-//	 */
-//	function print_tree($data, $title=false, $view=false){
-//		# Отрабатывать только в тестовом режиме
-//		if($view){
-//			$obj_array=new \array_class();
-//			Debug::call()
-//				->addBacktrace(1)
-//				->isAsItIs(true)
-//				->addDescription($obj_array->print_table_tree_array($data))
-//				->addTitle($title)
-//				->showHTML();
-//		}
-//	}
-//}
+if (!function_exists('print_table')){
+	/** Пользовательское сообщение.
+	 * @param int|string|array $data Переменная для печати.
+	 * @param string $title Заголовок.
+	 * @param bool $view Маркер "показывать в любом случае".
+	 */
+	function print_table($data, $title=false, $view=true){
+		# Отрабатывать только в тестовом режиме
+		if($view){
+			$obj_array=new \RusaDrako\debug\ArrayView();
+			Debug::call()
+				->addBacktrace(1)
+				->isAsItIs(true)
+				->addDescription($obj_array->print_table_2d_array($data))
+				->addTitle($title)
+				->showHTML();
+		}
+	}
+}
+
+if (!function_exists('print_tree')){
+	/** Пользовательское сообщение.
+	 * @param int|string|array $data Переменная для печати.
+	 * @param string $title Заголовок.
+	 * @param bool $view Маркер "показывать в любом случае".
+	 */
+	function print_tree($data, $title=false, $view=true){
+		# Отрабатывать только в тестовом режиме
+		if($view){
+			$obj_array=new \RusaDrako\debug\ArrayView();
+			Debug::call()
+				->addBacktrace(1)
+				->isAsItIs(true)
+				->addDescription($obj_array->print_table_tree_array($data))
+				->addTitle($title)
+				->showHTML();
+		}
+	}
+}
 
 if (!function_exists('print_style')){
 	/** Пользовательское сообщение - лог.
@@ -116,38 +116,3 @@ if (!function_exists('print_style')){
 		}
 	}
 }
-
-//if (!function_exists('print_log')){
-//	/** Пользовательское сообщение - лог.
-//	 * @param int|string|array $data Переменная для печати.
-//	 * @param bool $view Маркер "показывать в любом случае".
-//	 */
-//	function print_log($data, $view=true){
-//		# Отрабатывать только в тестовом режиме
-//		if($view){
-//			Debug::call()
-//				->setTitleColor('#008')
-//				->setBackgroundColor('#eef')
-//				->addDescription($data)
-//				->showHTML();
-//		}
-//	}
-//}
-//
-//if (!function_exists('print_error')){
-//	/** Пользовательское сообщение - ошибка.
-//	 * @param int|string|array $data Переменная для печати.
-//	 * @param string $title Заголовок.
-//	 * @param bool $view Маркер "показывать в любом случае".
-//	 */
-//	function print_error($data, $title=false, $view=true){
-//		if($view){
-//			Debug::call()
-//				->setTitleColor('#800')
-//				->setBackgroundColor('#faa')
-//				->addDescription($data)
-//				->addTitle($title)
-//				->showHTML();
-//		}
-//	}
-//}

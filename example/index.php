@@ -21,13 +21,13 @@ function f1() {
 	print_info_app($arr, 'print_info_app');
 	echo '</pre>';
 	print_dump($arr, 'print_dump');
-	/*print_table(
+	print_table(
 		[
 			['column_1'=>'test 1', 'column_2' => 1],
 			['column_2'=>'test 2', 'column_3' => 2],
 			['column_1'=>'test 3', 'column_2' => 3],
-		], 'print_table');*/
-	/*print_tree(
+		], 'print_table');
+	print_tree(
 		[
 			'arr_1_1'=>'test 1 1',
 			'arr_1_2'=>[
@@ -36,11 +36,9 @@ function f1() {
 					'arr_3_1'=>'test 3 1',
 					'arr_3_2'=>'test 3 2',
 					'arr_3_3'=>'test 3 3'
-				]]], 'print_tree');*/
+				]]], 'print_tree');
 	print_style(Debug::STYLE_NO, $arr, 'print_style');
-	//print_log($arr);
-	//print_error($arr, 'print_error');
-
+Hf,j
 	$arrStyle = [
 		Debug::STYLE_NO,
 		Debug::STYLE_NOTE,
