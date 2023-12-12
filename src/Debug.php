@@ -69,10 +69,11 @@ class Debug{
 
 	/** Базова чистка настроек */
 	private function _clean(){
-		$this->_typeBacktrace=null;
-		$this->_title=null;
-		$this->_description=null;
-		$this->_isVarDump=null;
+		$this->_typeBacktrace = null;
+		$this->_title         = null;
+		$this->_description   = null;
+		$this->_isVarDump     = null;
+		$this->_isAsItIs      = null;
 		$this->useStyle(static::STYLE_NOTE);
 	}
 
@@ -175,6 +176,7 @@ class Debug{
 		$classView->setBacktrace($this->_printBacktrace());
 		$classView->setDescription($this->_viewDescription());
 		$classView->getView();
+		$this->_clean();
 	}
 
 	/**
@@ -186,6 +188,7 @@ class Debug{
 		$classView->setBacktrace($this->_printBacktraceApp());
 		$classView->setDescription($this->_viewDescription());
 		$classView->getView();
+		$this->_clean();
 	}
 
 	/** Блок информации по "цепочке вызова" */
