@@ -181,7 +181,7 @@ class ArrayView {
 	 * @param string $class Имя класса таблицы (по умолчанию присваевается стиль).
 	 * @return string Табличное представление древовидного массива
 	 */
-	public function print_table_tree_array($array = [], $class = false) {
+	public function print_table_tree_array($array = [], $class = false, $classRecursion = []) {
 		# Используем класс или стиль
 		$class = $class ? ' class="' . $class . '"' : '';
 		$style = $class ? '' : ' style="border: 1px solid #ddd;"';
@@ -194,10 +194,23 @@ class ArrayView {
 			} else {
 				foreach($array as $key => $value) {
 					$content[] = '<tr>';
-					if (is_array($value)) {
-						$content[] = '<td style="border: 1px solid #f0f; color: #f0f;"><b>[' . $key . ']</b></td>';
+					if (is_array($value)){
+						$content[]='<td style="border: 1px solid #f0f; color: #f0f;"><b>['.$key.']</b></td>';
+						$content[]="<td{$style}>";
+						$content[]=$this->print_table_tree_array($value);
+						$content[]='</td>';
+					}else if (is_object($value)) {
+						$class = get_class($value);
+						$value = get_object_vars($value);
+						$content[] = "<td style=\"border: 1px solid #080; color: #080;\"><b>[{$key}]</b></td>";
 						$content[] = "<td{$style}>";
-						$content[] = $this->print_table_tree_array($value);
+						$content[] = "<span style=\"color: #080;\">Object ({$class})</span>";
+						if (in_array($class, $classRecursion)) {
+							$content[] = '<br>*RECURSION*';
+						} else {
+							$classRecursion[] = $class;
+							$content[] = $this->print_table_tree_array($value, false, $classRecursion);
+						}
 						$content[] = '</td>';
 					} else {
 						$content[] = '<td style="border: 1px solid #00f; color: #00f;"><b>[' . $key . ']</b></td>';
