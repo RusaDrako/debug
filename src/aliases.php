@@ -1,5 +1,6 @@
 <?php
 
+use RusaDrako\debug\ArrayView;
 use RusaDrako\debug\Debug;
 
 if (!function_exists('print_info')){
@@ -9,7 +10,6 @@ if (!function_exists('print_info')){
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	function print_info($data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			Debug::call()
 				->addBacktrace(1)
@@ -28,7 +28,6 @@ if (!function_exists('print_info_app')){
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	function print_info_app($data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			Debug::call()
 				->addBacktrace(1)
@@ -47,7 +46,6 @@ if (!function_exists('print_dump')){
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	function print_dump($data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			Debug::call()
 				->addBacktrace(1)
@@ -67,7 +65,6 @@ if (!function_exists('print_table')){
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	function print_table($data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			$obj_array=new \RusaDrako\debug\ArrayView();
 			Debug::call()
@@ -87,9 +84,28 @@ if (!function_exists('print_tree')){
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	function print_tree($data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			$obj_array=new \RusaDrako\debug\ArrayView();
+			Debug::call()
+				->addBacktrace(1)
+				->isAsItIs(true)
+				->addDescription($obj_array->print_table_tree_array($data))
+				->addTitle($title)
+				->showHTML();
+		}
+	}
+}
+
+if (!function_exists('print_object')){
+	/** Пользовательское сообщение.
+	 * @param int|string|array $data Переменная для печати.
+	 * @param string $title Заголовок.
+	 * @param bool $view Маркер "показывать в любом случае".
+	 */
+	function print_object($data, $title=false, $view=true){
+		if($view){
+			$obj_array=new ArrayView();
+			$data=json_decode(json_encode($data), true);
 			Debug::call()
 				->addBacktrace(1)
 				->isAsItIs(true)
@@ -106,7 +122,6 @@ if (!function_exists('print_style')){
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	function print_style($style, $data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			Debug::call()
 				->useStyle($style)

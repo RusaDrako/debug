@@ -15,7 +15,6 @@ class Show {
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	public static function info($data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			Debug::call()
 				->addBacktrace(1)
@@ -32,7 +31,6 @@ class Show {
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	public static function info_app($data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			Debug::call()
 				->addBacktrace(1)
@@ -49,7 +47,6 @@ class Show {
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	public static function dump($data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			Debug::call()
 				->addBacktrace(1)
@@ -67,7 +64,6 @@ class Show {
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	public static function table($data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			$obj_array=new ArrayView();
 			Debug::call()
@@ -85,7 +81,6 @@ class Show {
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	public static function tree($data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			$obj_array=new ArrayView();
 			Debug::call()
@@ -103,7 +98,6 @@ class Show {
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	public static function object($data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			$obj_array=new ArrayView();
 			$data=json_decode(json_encode($data), true);
@@ -121,7 +115,6 @@ class Show {
 	 * @param bool $view Маркер "показывать в любом случае".
 	 */
 	public static function style($style, $data, $title=false, $view=true){
-		# Отрабатывать только в тестовом режиме
 		if($view){
 			Debug::call()
 				->useStyle($style)
