@@ -8,4 +8,5 @@ require_once('view/HTMLView.php');
 require_once('ArrayView.php');
 require_once('Backtrace.php');
 require_once('Debug.php');
+require_once('Show.php');
 require_once('aliases.php');
