@@ -212,6 +212,7 @@ HTML;
 				$content[]=implode($btClass->viewBacktrace(), '<hr>');
 				break;
 			default:
+				$content=null;
 				break;
 		}
 		# Возвращаем содержимое
@@ -238,6 +239,7 @@ HTML;
 				$content[]=$btClass->viewBacktrace();
 				break;
 			default:
+				$content=null;
 				break;
 		}
 		# Возвращаем содержимое

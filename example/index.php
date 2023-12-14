@@ -9,17 +9,17 @@ use RusaDrako\debug\Debug;
 require_once('../src/autoload.php');
 
 class ct1 {
-	const CONST1 = 'Константа 1';
-	const CONST2 = 'Константа 2';
-	const CONST3 = 'Константа 3';
+	const CONST_1_1 = 'Константа 1 1';
+	const CONST_1_2 = 'Константа 1 2';
+	const CONST_1_3 = 'Константа 1 3';
 
-	static public $paramStat1 = 'Параметр статический 1';
-	static public $paramStat2 = 'Параметр статический 2';
-	static public $paramStat3 = 'Параметр статический 3';
+	static public $paramStat_1_1 = 'Параметр статический 1 1';
+	static public $paramStat_1_2 = 'Параметр статический 1 2';
+	static public $paramStat_1_3 = 'Параметр статический 1 3';
 
-	public $param1 = 'Параметр 1';
-	public $param2 = 'Параметр 2';
-	public $param3 = 'Параметр 3';
+	public $param_1_1 = 'Параметр 1 1';
+	public $param_1_2 = 'Параметр 1 2';
+	public $param_1_3 = 'Параметр 1 3';
 
 	public $paramObj;
 
@@ -30,17 +30,17 @@ class ct1 {
 }
 
 class ct2 {
-	const CONST1 = 'Константа 1';
-	const CONST2 = 'Константа 2';
-	const CONST3 = 'Константа 3';
+	const CONST_2_1 = 'Константа 2 1';
+	const CONST_2_2 = 'Константа 2 2';
+	const CONST_2_3 = 'Константа 2 3';
 
-	static public $paramStat1 = 'Параметр статический 1';
-	static public $paramStat2 = 'Параметр статический 2';
-	static public $paramStat3 = 'Параметр статический 3';
+	static public $paramStat_2_1 = 'Параметр статический 2 1';
+	static public $paramStat_2_2 = 'Параметр статический 2 2';
+	static public $paramStat_2_3 = 'Параметр статический 2 3';
 
-	public $param1 = 'Параметр 1';
-	public $param2 = 'Параметр 2';
-	public $param3 = 'Параметр 3';
+	public $param_2_1 = 'Параметр 2 1';
+	public $param_2_2 = 'Параметр 2 2';
+	public $param_2_3 = 'Параметр 2 3';
 
 	public $parent;
 
@@ -112,8 +112,8 @@ function f1() {
 
 	print_table($arrTable, 'print_table');
 	print_tree($arrTree, 'print_tree');
-	print_object(new ct1(), 'print_object');
-	print_object(new ct1(1), 'print_object (recursion)');
+	print_tree(new ct1(), 'print_tree (object)');
+	print_tree(new ct1(1), 'print_tree (object_recursion)');
 
 	echo '<hr>';
 

@@ -12,10 +12,10 @@ if (!function_exists('print_info')){
 	function print_info($data, $title=false, $view=true){
 		if($view){
 			Debug::call()
-				->addBacktrace(1)
-				->addDescription($data)
 				->useStyle(Debug::STYLE_NOTE)
 				->addTitle($title)
+				->addBacktrace(1)
+				->addDescription($data)
 				->showHTML();
 		}
 	}
@@ -30,10 +30,10 @@ if (!function_exists('print_info_app')){
 	function print_info_app($data, $title=false, $view=true){
 		if($view){
 			Debug::call()
-				->addBacktrace(1)
 				->useStyle(Debug::STYLE_NOTE)
-				->addDescription($data)
 				->addTitle($title)
+				->addBacktrace(1)
+				->addDescription($data)
 				->showConsole();
 		}
 	}
@@ -48,11 +48,11 @@ if (!function_exists('print_dump')){
 	function print_dump($data, $title=false, $view=true){
 		if($view){
 			Debug::call()
-				->addBacktrace(1)
 				->useStyle(Debug::STYLE_NOTE)
-				->isVarDump(true)
-				->addDescription($data)
 				->addTitle($title)
+				->addBacktrace(1)
+				->addDescription($data)
+				->isVarDump(true)
 				->showHTML();
 		}
 	}
@@ -66,12 +66,12 @@ if (!function_exists('print_table')){
 	 */
 	function print_table($data, $title=false, $view=true){
 		if($view){
-			$obj_array=new \RusaDrako\debug\ArrayView();
+			$obj_array=new ArrayView();
 			Debug::call()
-				->addBacktrace(1)
-				->isAsItIs(true)
-				->addDescription($obj_array->print_table_2d_array($data))
 				->addTitle($title)
+				->addBacktrace(1)
+				->addDescription($obj_array->print_table_2d_array($data))
+				->isAsItIs(true)
 				->showHTML();
 		}
 	}
@@ -85,32 +85,15 @@ if (!function_exists('print_tree')){
 	 */
 	function print_tree($data, $title=false, $view=true){
 		if($view){
-			$obj_array=new \RusaDrako\debug\ArrayView();
-			Debug::call()
-				->addBacktrace(1)
-				->isAsItIs(true)
-				->addDescription($obj_array->print_table_tree_array($data))
-				->addTitle($title)
-				->showHTML();
-		}
-	}
-}
-
-if (!function_exists('print_object')){
-	/** Пользовательское сообщение.
-	 * @param int|string|array $data Переменная для печати.
-	 * @param string $title Заголовок.
-	 * @param bool $view Маркер "показывать в любом случае".
-	 */
-	function print_object($data, $title=false, $view=true){
-		if($view){
 			$obj_array=new ArrayView();
-			$data=json_decode(json_encode($data), true);
+			if(is_object($data)){
+				$data=['OBJECT'=>$data];
+			}
 			Debug::call()
-				->addBacktrace(1)
-				->isAsItIs(true)
-				->addDescription($obj_array->print_table_tree_array($data))
 				->addTitle($title)
+				->addBacktrace(1)
+				->addDescription($obj_array->print_table_tree_array($data))
+				->isAsItIs(true)
 				->showHTML();
 		}
 	}
@@ -125,8 +108,8 @@ if (!function_exists('print_style')){
 		if($view){
 			Debug::call()
 				->useStyle($style)
-				->addDescription($data)
 				->addTitle($title)
+				->addDescription($data)
 				->showHTML();
 		}
 	}
