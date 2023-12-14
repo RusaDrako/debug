@@ -168,8 +168,7 @@ class Visualization {
 							$content[] = '<br>*RECURSION*';
 						} else {
 							$objectRecursion[] = $value;
-							$value = get_object_vars($value);
-							$content[] = $this->print_table_tree_array($value, false, $objectRecursion);
+							$content[] = $this->print_table_tree_array((array)$value, false, $objectRecursion);
 						}
 						$content[] = '</td>';
 					} else {
