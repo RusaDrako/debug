@@ -1,6 +1,6 @@
 <?php
 
-use RusaDrako\debug\ArrayView;
+use RusaDrako\debug\Visualization;
 use RusaDrako\debug\Debug;
 
 if (!function_exists('print_info')){
@@ -66,7 +66,7 @@ if (!function_exists('print_table')){
 	 */
 	function print_table($data, $title=false, $view=true){
 		if($view){
-			$obj_array=new ArrayView();
+			$obj_array=new Visualization();
 			Debug::call()
 				->addTitle($title)
 				->addBacktrace(1)
@@ -85,7 +85,7 @@ if (!function_exists('print_tree')){
 	 */
 	function print_tree($data, $title=false, $view=true){
 		if($view){
-			$obj_array=new ArrayView();
+			$obj_array=new Visualization();
 			if(is_object($data)){
 				$data=['OBJECT'=>$data];
 			}

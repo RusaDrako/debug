@@ -82,7 +82,7 @@ class Show {
 	 */
 	public static function tree($data, $title=false, $view=true){
 		if($view){
-			$obj_array=new ArrayView();
+			$obj_array=new Visualization();
 			Debug::call()
 				->addBacktrace(1)
 				->isAsItIs(true)
@@ -99,7 +99,7 @@ class Show {
 	 */
 	public static function object($data, $title=false, $view=true){
 		if($view){
-			$obj_array=new ArrayView();
+			$obj_array=new Visualization();
 			$data=json_decode(json_encode($data), true);
 			Debug::call()
 				->addBacktrace(1)

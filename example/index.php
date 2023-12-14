@@ -3,7 +3,7 @@
 namespace RusaDrako\test;
 
 
-use RusaDrako\debug\ArrayView;
+use RusaDrako\debug\Visualization;
 use RusaDrako\debug\Debug;
 
 require_once('../src/autoload.php');
@@ -41,6 +41,7 @@ class ct2 {
 	public $param_2_1 = 'Параметр 2 1';
 	public $param_2_2 = 'Параметр 2 2';
 	public $param_2_3 = 'Параметр 2 3';
+	public $param_arr = ['key_1' => 'text_1','key_2' => 'text_2',];
 
 	public $parent;
 
@@ -90,6 +91,9 @@ function f1() {
 		]
 	];
 
+	$arrData['table']=$arrTable;
+	$arrData['tree']=$arrTree;
+
 	foreach($arrData as $k=>$v) {
 		print_info($v, "print_info ({$k})");
 	}
@@ -114,6 +118,7 @@ function f1() {
 	print_tree($arrTree, 'print_tree');
 	print_tree(new ct1(), 'print_tree (object)');
 	print_tree(new ct1(1), 'print_tree (object_recursion)');
+	print_tree($arrTree, 'print_tree (mixed)');
 
 	echo '<hr>';
 
@@ -125,10 +130,10 @@ function f1() {
 		Debug::STYLE_ERROR,
 	];
 	foreach($arrStyle as $v){
-		print_style($v, $arrData['array'], "print_style ({$v})");
+		print_style($v, $arrTree, "print_style ({$v})");
 	}
 
-	$objArray = new ArrayView();
+	$objArray = new Visualization();
 	echo '<hr>';
 	echo $objArray->print_table_2d_array($arrTable);
 	echo '<hr>';
