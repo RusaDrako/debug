@@ -13,13 +13,13 @@ class HTMLView extends abs_View{
 HTML;
 
 	public $template = <<<HTML
-<pre class="block_print_info" style=":styleBackground:"><label for="debug_print_:key:"><span style="font-size: 120%;:styleTitle:"><b>&#9660; :title: &#9660;</b></span></label><input id="debug_print_:key:" class="input_print_info" type="checkbox" style="display: none;"><div class="block_print_info_show">:backtrace::description:</div></pre>
+<pre class="block_print_info" style=":styleBackground:"><label for="debug_print_:key:"><span style="font-size: 120%;:styleTitle:"><b>&#9660; :title: &#9660;</b></span></label><input id="debug_print_:key:" class="input_print_info" type="checkbox" style="display: none;"><div class="block_print_info_show"><hr>:backtrace::description:</div></pre>
 HTML;
 
 	public function setBacktrace($value){
 		if ($value) {
 			parent::setBacktrace($value);
-			$value='<hr>'.$this->set[':backtrace:'].'<hr>';
+			$value=$this->set[':backtrace:'].'<hr>';
 		}
 		$this->set[':backtrace:'] = $value;
 		return $this;
