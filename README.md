@@ -24,25 +24,39 @@ require_once('/debug/src/autoload.php')
 ## Функции вывода данных
 
 ```php
+use RusaDrako\debug\DebugExpansion;
+
 /** Вывод блока данных с добавлением backtrace (html) */
-function print_info($data, $title=false, $view=true){}
+print_info($data, $title, $view);
+// или
+DebugExpansion::info($data, $title, $view);
 
 /** Вывод блока данных с добавлением backtrace (console) */
-function print_info_app($data, $title=false, $view=true){}
+print_info_app($data, $title, $view);
+// или
+DebugExpansion::info_app($data, $title, $view);
 
 /** Вывод блока данных в формате var_dump с добавлением backtrace (html) */
-function print_dump($data, $title=false, $view=true){}
+print_dump($data, $title, $view);
+// или
+DebugExpansion::dump($data, $title, $view);
 
-/** Вывод табличного массива */
-function print_table($data, $title=false, $view=true){}
+/** Вывод табличного массива с добавлением backtrace */
+print_table($data, $title, $view);
+// или
+DebugExpansion::table($data, $title, $view);
 
-/** Вывод древовидного массива */
-function print_tree($data, $title=false, $view=true){}
+/** Вывод древовидного массива/объекта с добавлением backtrace */
+print_tree($data, $title, $view);
+// или
+DebugExpansion::tree($data, $title, $view);
 
-/** Пользовательское сообщение - ошибка (html) */
-function print_style($style, $data, $title=false, $view=true){}
+/** Стилизованное сообщение */
+print_style($style, $data, $title, $view);
+// или
+DebugExpansion::style($style, $data, $title, $view);
 ```
 - **$data** - Содержимое блока
-- **$title** - Заголовок блока
-- **$view** - Показать блок
+- **$title** - Заголовок блока (по умолчанию null)
+- **$view** - Показать блок (по умолчанию true)
 - **$style** - Стиль формы

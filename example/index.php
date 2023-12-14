@@ -5,6 +5,7 @@ namespace RusaDrako\test;
 
 use RusaDrako\debug\Visualization;
 use RusaDrako\debug\Debug;
+use RusaDrako\debug\DebugExpansion;
 
 require_once('../src/autoload.php');
 
@@ -94,6 +95,9 @@ function f1() {
 	$arrData['table']=$arrTable;
 	$arrData['tree']=$arrTree;
 
+	echo '<div style="width: 50%; display:inline-block; vertical-align: top;">';
+	echo '<h3>Функции</h3>';
+
 	foreach($arrData as $k=>$v) {
 		print_info($v, "print_info ({$k})");
 	}
@@ -133,14 +137,65 @@ function f1() {
 		print_style($v, $arrTree, "print_style ({$v})");
 	}
 
-	$objArray = new Visualization();
+	echo '</div>';
+	echo '<div style="width: 50%; display:inline-block; vertical-align: top;">';
+	echo '<h3>Класс DebugExpansion</h3>';
+
+	foreach($arrData as $k=>$v) {
+		DebugExpansion::info($v, "DebugExpansion::info ({$k})");
+	}
+
 	echo '<hr>';
+
+	echo '<pre>';
+	foreach($arrData as $k=>$v) {
+		DebugExpansion::info_app($v, "DebugExpansion::info_app ({$k})");
+	}
+	echo '</pre>';
+
+	echo '<hr>';
+
+	foreach($arrData as $k=>$v) {
+		DebugExpansion::dump($v, "DebugExpansion::dump ({$k})");
+	}
+
+	echo '<hr>';
+
+	DebugExpansion::table($arrTable, 'DebugExpansion::table');
+	DebugExpansion::tree($arrTree, 'DebugExpansion::tree');
+	DebugExpansion::tree(new ct1(), 'DebugExpansion::tree (object)');
+	DebugExpansion::tree(new ct1(1), 'DebugExpansion::tree (object_recursion)');
+	DebugExpansion::tree($arrTree, 'DebugExpansion::tree (mixed)');
+
+	echo '<hr>';
+
+	$arrStyle = [
+		Debug::STYLE_NO,
+		Debug::STYLE_NOTE,
+		Debug::STYLE_OK,
+		Debug::STYLE_WARNING,
+		Debug::STYLE_ERROR,
+	];
+	foreach($arrStyle as $v){
+		DebugExpansion::style($v, $arrTree, "DebugExpansion::style ({$v})");
+	}
+
+	echo '</div>';
+	echo '<div style="width: 100%; margin-top: 50px;">';
+
+	echo '<hr>';
+	echo '<hr>';
+	echo '<hr>';
+
+	$objArray = new Visualization();
 	echo $objArray->print_table_2d_array($arrTable);
 	echo '<hr>';
 	echo $objArray->print_table_tree_array($arrTable);
 	echo '<hr>';
 	echo $objArray->print_table_tree_array($arrTree);
 	echo '<hr>';
+
+	echo '</div>';
 }
 
 $class = new c1();

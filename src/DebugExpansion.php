@@ -7,7 +7,7 @@ namespace RusaDrako\debug;
  * @created 2023-12-11
  * @author Петухов Леонид <rusadrako@yandex.ru>
  */
-class Show {
+class DebugExpansion extends Debug {
 
 	/** Пользовательское сообщение.
 	 * @param int|string|array $data Переменная для печати.
@@ -16,7 +16,7 @@ class Show {
 	 */
 	public static function info($data, $title=false, $view=true){
 		if($view){
-			Debug::call()
+			static::call()
 				->addBacktrace(1)
 				->addDescription($data)
 				->useStyle(Debug::STYLE_NOTE)
@@ -32,7 +32,7 @@ class Show {
 	 */
 	public static function info_app($data, $title=false, $view=true){
 		if($view){
-			Debug::call()
+			static::call()
 				->addBacktrace(1)
 				->useStyle(Debug::STYLE_NOTE)
 				->addDescription($data)
@@ -48,7 +48,7 @@ class Show {
 	 */
 	public static function dump($data, $title=false, $view=true){
 		if($view){
-			Debug::call()
+			static::call()
 				->addBacktrace(1)
 				->useStyle(Debug::STYLE_NOTE)
 				->isVarDump(true)
@@ -65,8 +65,8 @@ class Show {
 	 */
 	public static function table($data, $title=false, $view=true){
 		if($view){
-			$obj_array=new ArrayView();
-			Debug::call()
+			$obj_array=new Visualization();
+			static::call()
 				->addBacktrace(1)
 				->isAsItIs(true)
 				->addDescription($obj_array->print_table_2d_array($data))
@@ -83,25 +83,10 @@ class Show {
 	public static function tree($data, $title=false, $view=true){
 		if($view){
 			$obj_array=new Visualization();
-			Debug::call()
-				->addBacktrace(1)
-				->isAsItIs(true)
-				->addDescription($obj_array->print_table_tree_array($data))
-				->addTitle($title)
-				->showHTML();
-		}
-	}
-
-	/** Пользовательское сообщение.
-	 * @param int|string|array $data Переменная для печати.
-	 * @param string $title Заголовок.
-	 * @param bool $view Маркер "показывать в любом случае".
-	 */
-	public static function object($data, $title=false, $view=true){
-		if($view){
-			$obj_array=new Visualization();
-			$data=json_decode(json_encode($data), true);
-			Debug::call()
+			if(is_object($data)){
+				$data=['OBJECT'=>$data];
+			}
+			static::call()
 				->addBacktrace(1)
 				->isAsItIs(true)
 				->addDescription($obj_array->print_table_tree_array($data))
@@ -116,7 +101,7 @@ class Show {
 	 */
 	public static function style($style, $data, $title=false, $view=true){
 		if($view){
-			Debug::call()
+			static::call()
 				->useStyle($style)
 				->addDescription($data)
 				->addTitle($title)
