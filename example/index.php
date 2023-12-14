@@ -21,6 +21,8 @@ class ct1 {
 	public $param_1_1 = 'Параметр 1 1';
 	public $param_1_2 = 'Параметр 1 2';
 	public $param_1_3 = 'Параметр 1 3';
+	private $param_private_1 = 'Параметр приватный 1 1';
+	protected $param_protected_1 = 'Параметр протектед 1 2';
 
 	public $paramObj;
 
