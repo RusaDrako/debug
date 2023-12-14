@@ -9,12 +9,12 @@ namespace RusaDrako\debug;
  */
 class Visualization {
 
-	public $tableStyle = ' style="border: 1px solid #ddd;"';
-	public $keyStyle = ' style="border: 1px solid #00f; color: #00f; font-weight: bold;"';
-	public $arrayStyle = ' style="border: 1px solid #f0f; color: #f0f; font-weight: bold;"';
-	public $objectStyle = ' style="border: 1px solid #080; color: #080; font-weight: bold;"';
+	public $tableStyle = ' style="border: 2px solid #ddd; padding: 1px; border-spacing: 2px; border-collapse: unset;"';
+	public $keyStyle = ' style="border: 2px solid #00f; color: #00f; font-weight: bold;"';
+	public $arrayStyle = ' style="border: 2px solid #0aa; color: #0aa; font-weight: bold;"';
+	public $objectStyle = ' style="border: 2px solid #080; color: #080; font-weight: bold;"';
 	public $objectNameStyle = ' style="color: #080; font-weight: bold;"';
-	public $errorStyle = ' style="border: 1px solid #fdd; color: #f00"';
+	public $errorStyle = ' style="border: 2px solid #fdd; color: #f00"';
 
 	/**
 	 * Возвращает html-код таблицы сформированной на основе двухмерного массива
@@ -140,32 +140,32 @@ class Visualization {
 		# Используем класс или стиль
 		$class = $class ? ' class="' . $class . '"' : '';
 		$style = $class ? '' : $this->tableStyle;
-		$content[] = "<table{$class}{$style}>";
-		if (is_array($array)) {
+		if (!is_array($array)){
+			$content[] = "<span{$this->errorStyle}><b>ОШИБКА:</b> Переданные данные не являются массивом.</span>";
+		} else {
 			if (empty($array)) {
-				$content[] = '<tr>';
-				$content[] = "<td{$style}> <i>Пустой массив</i> </td>";
-				$content[] = '</tr>';
+				$content[] = "&nbsp;[ ]&nbsp;";
 			} else {
+				$content[] = "<table{$class}{$style}>";
 				foreach($array as $key => $value) {
 					$content[] = '<tr>';
 					if (is_array($value)){
-						$content[] = "<td{$this->arrayStyle}>{$key}</td>";
-						$content[] = "<td{$style}>";
+						$content[] = "<td{$this->arrayStyle}>&nbsp;{$key}&nbsp;</td>";
+						$content[] = "<td{$this->arrayStyle}>";
 						$content[] = $this->print_table_tree_array($value);
 						$content[] = '</td>';
 					} else if (is_object($value)) {
 						$class = get_class($value);
-						$content[] = "<td{$this->objectStyle}>{$key}</td>";
-						$content[] = "<td{$style}>";
-						$content[] = "<span{$this->objectNameStyle}>Object ({$class})</span>";
+						$content[] = "<td{$this->objectStyle}>&nbsp;{$key}&nbsp;</td>";
+						$content[] = "<td{$this->objectStyle}>";
+						$content[] = "<span{$this->objectNameStyle}>&nbsp;Object ({$class})</span>";
 						$recursion = false;
 						foreach($objectRecursion as $v) {
 							if ($v === $value) {$recursion=true;}
 						}
 						# Если в дереве ранее встречался данный объект
 						if ($recursion) {
-							$content[] = '<br>*RECURSION*';
+							$content[] = '<br>&nbsp;*RECURSION*';
 						} else {
 							$objectRecursion[] = $value;
 							$valueNext = [];
@@ -177,19 +177,16 @@ class Visualization {
 						}
 						$content[] = '</td>';
 					} else {
-						$content[] = "<td{$this->keyStyle}>{$key}</td>";
-						$content[] = "<td{$style}>{$value}</td>";
+						$content[] = "<td{$this->keyStyle}>&nbsp;{$key}&nbsp;</td>";
+						$content[] = "<td{$style}>&nbsp;";
+						$content[] = var_export($value, true);
+						$content[] = "&nbsp;</td>";
 					}
 					$content[] = '</tr>';
 				}
+				$content[] = '</table>';
 			}
-		} else {
-			$content[] = '<tr>';
-			$content[] = "<td{$this->errorStyle}><b>ОШИБКА:</b> Переданные данные не являются массивом.</td>";
-			$content[] = '</td>';
-			$content[] = '</tr>';
 		}
-		$content[] = '</table>';
 		$result = implode("\n", $content);
 		# Возвращаем результат
 		return $result;

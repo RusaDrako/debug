@@ -20,9 +20,9 @@ class ct1 {
 
 	public $param_1_1 = 'Параметр 1 1';
 	public $param_1_2 = 'Параметр 1 2';
-	public $param_1_3 = 'Параметр 1 3';
-	private $param_private_1 = 'Параметр приватный 1 1';
+	public $param_1_3 = [];
 	protected $param_protected_1 = 'Параметр протектед 1 2';
+	private $param_private_1 = 'Параметр приватный 1 1';
 
 	public $paramObj;
 
@@ -84,7 +84,7 @@ function f1() {
 			'key_2_3'=>[
 				'key_3_1'=>'test 3 1',
 				'key_3_2'=>'test 3 2',
-				'key_3_3'=>'test 3 3',
+				'key_3_3'=>[],
 				'key_3_4'=>NULL,
 				'key_3_5'=>false,
 				'key_3_6'=>true,
@@ -125,6 +125,9 @@ function f1() {
 	print_tree(new ct1(), 'print_tree (object)');
 	print_tree(new ct1(1), 'print_tree (object_recursion)');
 	print_tree($arrTree, 'print_tree (mixed)');
+	echo '<hr>';
+
+	print_tree(null, 'print_tree (null)');
 
 	echo '<hr>';
 
@@ -168,6 +171,9 @@ function f1() {
 	DebugExpansion::tree(new ct1(), 'DebugExpansion::tree (object)');
 	DebugExpansion::tree(new ct1(1), 'DebugExpansion::tree (object_recursion)');
 	DebugExpansion::tree($arrTree, 'DebugExpansion::tree (mixed)');
+	echo '<hr>';
+
+	print_tree(null, 'print_tree (null)');
 
 	echo '<hr>';
 
