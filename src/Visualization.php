@@ -152,13 +152,21 @@ class Visualization {
 					if (is_array($value)){
 						$content[] = "<td{$this->arrayStyle}>&nbsp;{$key}&nbsp;</td>";
 						$content[] = "<td{$this->arrayStyle}>";
+						$key = rand(100000000, 999999999);
+						$content[] = '<span class="block_print_info"><label for="debug_table_print_' . $key . '"><b>&#9660;&#9660;';
+						$content[] = "Array";
+						$content[] = '&#9660;&#9660;</b></label><input id="debug_table_print_' . $key . '" class="input_print_info" type="checkbox" style="display: none;" checked><span class="block_print_info_show">';
 						$content[] = $this->print_table_tree_array($value);
+						$content[] = '</span></span>';
 						$content[] = '</td>';
 					} else if (is_object($value)) {
 						$class = get_class($value);
 						$content[] = "<td{$this->objectStyle}>&nbsp;{$key}&nbsp;</td>";
 						$content[] = "<td{$this->objectStyle}>";
+						$key = rand(100000000, 999999999);
+						$content[] = '<span class="block_print_info"><label for="debug_table_print_' . $key . '"><b>&#9660;&#9660; ';
 						$content[] = "<span{$this->objectNameStyle}>&nbsp;Object ({$class})</span>";
+						$content[] = ' &#9660;&#9660;</b></label><input id="debug_table_print_' . $key . '" class="input_print_info" type="checkbox" style="display: none;" checked><span class="block_print_info_show">';
 						$recursion = false;
 						foreach($objectRecursion as $v) {
 							if ($v === $value) {$recursion=true;}
@@ -174,6 +182,7 @@ class Visualization {
 								$valueNext[$k_2] = $v_2;
 							}
 							$content[] = $this->print_table_tree_array($valueNext, false, $objectRecursion);
+							$content[] = '</span></span>';
 						}
 						$content[] = '</td>';
 					} else {
