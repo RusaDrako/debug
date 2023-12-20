@@ -11,6 +11,11 @@ use RusaDrako\debug\view\HTMLView;
  * @author Петухов Леонид <rusadrako@yandex.ru>
  */
 class Debug{
+
+	/** @var string Тип вывода трасировки */
+	const BACKTRACE_TYPE_1 = 1;
+	const BACKTRACE_TYPE_2 = 2;
+
 	/** @var string Стили отображения */
 	const STYLE_NO      = 'no';
 	const STYLE_NOTE    = 'note';
@@ -196,13 +201,13 @@ class Debug{
 		$content=[];
 		$btClass = new Backtrace();
 		switch($this->_typeBacktrace){
-			case Backtrace::BACKTRACE_TYPE_1:
+			case static::BACKTRACE_TYPE_1:
 				$btClass->template=<<<HTML
 <b>:file: (:line:):</b> => :function:
 HTML;
 				$content[]=implode($btClass->viewBacktrace(), '<br>');
 				break;
-			case Backtrace::BACKTRACE_TYPE_2:
+			case static::BACKTRACE_TYPE_2:
 				$btClass->template=<<<HTML
 <b>Папка:</b>   :dir:
 <b>Файл:</b>    :fileName:
@@ -224,13 +229,13 @@ HTML;
 		$content=[];
 		$btClass = new Backtrace();
 		switch($this->_typeBacktrace){
-			case Backtrace::BACKTRACE_TYPE_1:
+			case static::BACKTRACE_TYPE_1:
 				$btClass->template=<<<HTML
 :file: (:line:): => :function:
 HTML;
 				$content[]=$btClass->viewBacktrace();
 				break;
-			case Backtrace::BACKTRACE_TYPE_2:
+			case static::BACKTRACE_TYPE_2:
 				$btClass->template=<<<HTML
 Папка:  :dir:
 Файл:   :fileName:

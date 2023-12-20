@@ -8,9 +8,6 @@ namespace RusaDrako\debug;
  * @author Петухов Леонид <rusadrako@yandex.ru>
  */
 class Backtrace {
-	/** @var string Тип вывода трасировки */
-	const BACKTRACE_TYPE_1 = 1;
-	const BACKTRACE_TYPE_2 = 2;
 
 	public $template = ':file: (:line:): => :function:';
 	public $count = 4;

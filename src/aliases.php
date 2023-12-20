@@ -14,7 +14,7 @@ if (!function_exists('print_info')){
 			Debug::call()
 				->useStyle(Debug::STYLE_NOTE)
 				->addTitle($title)
-				->addBacktrace(1)
+				->addBacktrace(Debug::BACKTRACE_TYPE_1)
 				->addDescription($data)
 				->showHTML();
 		}
@@ -32,7 +32,7 @@ if (!function_exists('print_info_app')){
 			Debug::call()
 				->useStyle(Debug::STYLE_NOTE)
 				->addTitle($title)
-				->addBacktrace(1)
+				->addBacktrace(Debug::BACKTRACE_TYPE_1)
 				->addDescription($data)
 				->showConsole();
 		}
@@ -50,7 +50,7 @@ if (!function_exists('print_dump')){
 			Debug::call()
 				->useStyle(Debug::STYLE_NOTE)
 				->addTitle($title)
-				->addBacktrace(1)
+				->addBacktrace(Debug::BACKTRACE_TYPE_1)
 				->addDescription($data)
 				->isVarDump(true)
 				->showHTML();
@@ -69,7 +69,7 @@ if (!function_exists('print_table')){
 			$obj_array=new Visualization();
 			Debug::call()
 				->addTitle($title)
-				->addBacktrace(1)
+				->addBacktrace(Debug::BACKTRACE_TYPE_1)
 				->addDescription($obj_array->print_table_2d_array($data))
 				->isAsItIs(true)
 				->showHTML();
@@ -91,7 +91,7 @@ if (!function_exists('print_tree')){
 			}
 			Debug::call()
 				->addTitle($title)
-				->addBacktrace(1)
+				->addBacktrace(Debug::BACKTRACE_TYPE_1)
 				->addDescription($obj_array->print_table_tree_array($data))
 				->isAsItIs(true)
 				->showHTML();

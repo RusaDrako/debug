@@ -17,9 +17,9 @@ class DebugExpansion extends Debug {
 	public static function info($data, $title=false, $view=true){
 		if($view){
 			static::call()
-				->addBacktrace(1)
+				->addBacktrace(static::BACKTRACE_TYPE_1)
 				->addDescription($data)
-				->useStyle(Debug::STYLE_NOTE)
+				->useStyle(static::STYLE_NOTE)
 				->addTitle($title)
 				->showHTML();
 		}
@@ -33,8 +33,8 @@ class DebugExpansion extends Debug {
 	public static function info_app($data, $title=false, $view=true){
 		if($view){
 			static::call()
-				->addBacktrace(1)
-				->useStyle(Debug::STYLE_NOTE)
+				->addBacktrace(static::BACKTRACE_TYPE_1)
+				->useStyle(static::STYLE_NOTE)
 				->addDescription($data)
 				->addTitle($title)
 				->showConsole();
@@ -49,8 +49,8 @@ class DebugExpansion extends Debug {
 	public static function dump($data, $title=false, $view=true){
 		if($view){
 			static::call()
-				->addBacktrace(1)
-				->useStyle(Debug::STYLE_NOTE)
+				->addBacktrace(static::BACKTRACE_TYPE_1)
+				->useStyle(static::STYLE_NOTE)
 				->isVarDump(true)
 				->addDescription($data)
 				->addTitle($title)
@@ -67,7 +67,7 @@ class DebugExpansion extends Debug {
 		if($view){
 			$obj_array=new Visualization();
 			static::call()
-				->addBacktrace(1)
+				->addBacktrace(static::BACKTRACE_TYPE_1)
 				->isAsItIs(true)
 				->addDescription($obj_array->print_table_2d_array($data))
 				->addTitle($title)
@@ -87,7 +87,7 @@ class DebugExpansion extends Debug {
 				$data=['OBJECT'=>$data];
 			}
 			static::call()
-				->addBacktrace(1)
+				->addBacktrace(static::BACKTRACE_TYPE_1)
 				->isAsItIs(true)
 				->addDescription($obj_array->print_table_tree_array($data))
 				->addTitle($title)
