@@ -3,10 +3,14 @@
 namespace RusaDrako\debug\view;
 
 class abs_View {
+
+	/** @var int Маркер использования стиля */
+	static protected $isUseStyle = 0;
+
 	public $set = [
 		':key:' => null,
 		':styleTitle:' => null,
-		':description:' => null,
+		':styleBackground:' => null,
 		':title:' => null,
 		':backtrace:' => null,
 		':description:' => null,
@@ -27,11 +31,12 @@ class abs_View {
 	}
 
 	public function setDescription($value){
-		$this->set[':description:'] = $this->_implode_recursion("", $value);
+		$this->set[':description:'] = $this->_implode_recursion("\n", $value);
 		return $this;
 	}
 
-	/** Рекурсивная сборка массива в строку
+	/**
+	 * Рекурсивная сборка массива в строку
 	 * @param string $glue Строка-склейка
 	 * @param array $array Массив
 	 */
@@ -44,12 +49,21 @@ class abs_View {
 		return implode($glue, $array);
 	}
 
+	/** Выводит блок */
 	public function getView(){
 		# Рандомный ключ для checkbox
 		$this->set[':key:'] = rand(1000000, 9999999);
 		$content=str_replace(array_keys($this->set), $this->set, $this->template);
-		echo $this->style;
+		$this->getStyle();
 		echo $content;
+	}
+
+	/** Выводит стиль */
+	public function getStyle(){
+		if (!static::$isUseStyle) {
+			static::$isUseStyle = 1;
+			echo $this->style;
+		}
 	}
 
 }

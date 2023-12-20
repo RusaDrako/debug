@@ -153,7 +153,7 @@ class Visualization {
 						$content[] = "<td{$this->arrayStyle}>&nbsp;{$key}&nbsp;</td>";
 						$content[] = "<td{$this->arrayStyle}>";
 						$key = rand(100000000, 999999999);
-						$content[] = '<span class="block_print_info"><label for="debug_table_print_' . $key . '"><b>&#9660;&#9660;&#9660;';
+						$content[] = '<span class="block_print_info"><label for="debug_table_print_' . $key . '"><b>&#9654;';
 						$content[] = "Array";
 						$content[] = '</b></label><input id="debug_table_print_' . $key . '" class="input_print_info" type="checkbox" style="display: none;" checked><span class="block_print_info_show">';
 						$content[] = $this->print_table_tree_array($value);
@@ -164,7 +164,7 @@ class Visualization {
 						$content[] = "<td{$this->objectStyle}>&nbsp;{$key}&nbsp;</td>";
 						$content[] = "<td{$this->objectStyle}>";
 						$key = rand(100000000, 999999999);
-						$content[] = '<span class="block_print_info"><label for="debug_table_print_' . $key . '"><b>&#9660;&#9660;&#9660;';
+						$content[] = '<span class="block_print_info"><label for="debug_table_print_' . $key . '"><b>&#9654;';
 						$content[] = "<span{$this->objectNameStyle}>&nbsp;Object ({$class})</span>";
 						$content[] = '</b></label><input id="debug_table_print_' . $key . '" class="input_print_info" type="checkbox" style="display: none;" checked><span class="block_print_info_show">';
 						$recursion = false;
