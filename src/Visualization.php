@@ -156,7 +156,7 @@ class Visualization {
 						$content[] = '<span class="block_print_info"><label for="debug_table_print_' . $key . '"><b>&#9654;';
 						$content[] = "Array";
 						$content[] = '</b></label><input id="debug_table_print_' . $key . '" class="input_print_info" type="checkbox" style="display: none;" checked><span class="block_print_info_show">';
-						$content[] = $this->print_table_tree_array($value);
+						$content[] = $this->print_table_tree_array($value, false, $objectRecursion);
 						$content[] = '</span></span>';
 						$content[] = '</td>';
 					} else if (is_object($value)) {
