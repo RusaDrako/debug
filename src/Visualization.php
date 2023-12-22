@@ -175,13 +175,12 @@ class Visualization {
 						if ($recursion) {
 							$content[] = '<br>&nbsp;*RECURSION*';
 						} else {
-							$objectRecursion[] = $value;
 							$valueNext = [];
 							foreach((array)$value as $k_2 => $v_2) {
 								$k_2 = str_replace($class, '**', $k_2);
 								$valueNext[$k_2] = $v_2;
 							}
-							$content[] = $this->print_table_tree_array($valueNext, false, $objectRecursion);
+							$content[] = $this->print_table_tree_array($valueNext, false, array_merge($objectRecursion, [$value]));
 							$content[] = '</span></span>';
 						}
 						$content[] = '</td>';
