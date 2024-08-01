@@ -205,7 +205,7 @@ class Debug{
 				$btClass->template=<<<HTML
 <b>:file: (:line:):</b> => :function:
 HTML;
-				$content[]=implode($btClass->viewBacktrace(), '<br>');
+				$content[]=implode('<br>', $btClass->viewBacktrace());
 				break;
 			case static::BACKTRACE_TYPE_2:
 				$btClass->template=<<<HTML
@@ -214,7 +214,7 @@ HTML;
 <b>Строка:</b>  :line:
 <b>Функция:</b> :function:
 HTML;
-				$content[]=implode($btClass->viewBacktrace(), '<hr>');
+				$content[]=implode('<hr>', $btClass->viewBacktrace());
 				break;
 			default:
 				$content=null;
